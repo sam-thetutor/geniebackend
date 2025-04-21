@@ -1,0 +1,4 @@
+PORT=5000
+MONGODB_URI="mongodb+srv://smartskillsweb3:2YkfFKjeHpPyfuVF@schedule.j6xcq.mongodb.net/?retryWrites=true&w=majority&appName=schedule"
+NODE_ENV=development
+VITE_API_URL=http://localhost:6000/api 
