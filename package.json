@@ -14,6 +14,7 @@
     "@langchain/core": "^0.1.48",
     "@langchain/mongodb": "^0.0.2",
     "@langchain/openai": "^0.0.14",
+    "@open-ic/openchat-botclient-ts": "^1.0.29",
     "agent-twitter-client": "^0.0.18",
     "axios": "^1.6.7",
     "cors": "^2.8.5",
