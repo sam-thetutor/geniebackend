@@ -5,7 +5,6 @@ const Encryption = require('../utils/encryption');
 exports.createCampaign = async (req, res) => {
   try {
     const errors = validationResult(req);
-    console.log("incoming campaign :",req.body);
     if (!errors.isEmpty()) {
       console.log('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
@@ -46,14 +45,12 @@ exports.createCampaign = async (req, res) => {
 exports.getCampaigns = async (req, res) => {
   try {
     const { principal } = req.query;
-    console.log('Finding campaigns for principal:', principal);
     
     if (!principal) {
       return res.status(400).json({ message: 'Principal is required' });
     }
     
     const campaigns = await Campaign.find({ principal });
-    console.log('Found campaigns:', campaigns);
 
     // Decrypt API keys if needed
     const decryptedCampaigns = await Promise.all(campaigns.map(async (campaign) => {

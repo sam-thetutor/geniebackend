@@ -15,7 +15,6 @@ class OpenChatService {
 
       const message = await client.createTextMessage(content);
       let response = await client.sendMessage(message);
-      console.log('Message sent response :',response);
     } catch (error) {
       console.error('OpenChat API error:', error);
       throw new Error(`OpenChat API error: ${error.message}`);

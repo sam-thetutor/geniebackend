@@ -19,7 +19,6 @@ class TelegramBotService {
       console.log('Telegram bot started');
 
       const botInfo = await this.bot.getMe();
-      console.log('Bot info:', botInfo);
       this.botId = botInfo.id;
 
       this.bot.on('new_chat_members', async (msg) => {
@@ -38,10 +37,7 @@ class TelegramBotService {
         try {
           console.log('New message received:', {
             chatId: msg.chat.id,
-            chatTitle: msg.chat.title,
-            chatType: msg.chat.type,
-            from: msg.from,
-            messageText: msg.text || msg.caption
+            chatType: msg.chat.type
           });
           
           if (['group', 'supergroup', 'channel'].includes(msg.chat.type)) {
@@ -66,9 +62,6 @@ class TelegramBotService {
 
   async handleBotAddedToGroup(chat) {
     try {
-      const chatInfo = await this.bot.getChat(chat.id);
-      console.log('Chat info:', chatInfo);
-      
       const botMember = await this.bot.getChatMember(chat.id, this.botId);
       const isAdmin = ['administrator', 'creator'].includes(botMember.status);
       
@@ -93,10 +86,9 @@ class TelegramBotService {
         'source.chatId': msg.chat.id.toString(),
         active: true 
       });
-console.log("routes found ",routes)
+
       for (const route of routes) {
         // Skip if username filter is set and doesn't match
-        console.log("route.source.username",route.source.username)
         if (route.source.username && msg.from.username != route.source.username) {
           continue;
         }
@@ -106,7 +98,6 @@ console.log("routes found ",routes)
         const media = msg.photo ? msg.photo[msg.photo.length - 1] : null;
 
         // Forward to destinations...
-        console.log("forwarding to openchat")
         await this.forwardToOpenChat(msg, route);
         // Your existing forwarding logic here
       }

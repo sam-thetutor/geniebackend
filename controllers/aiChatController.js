@@ -57,7 +57,6 @@ const getAllInstances = async (req, res) => {
 
 const getChatInstance = async (req, res) => {
     try {
-        console.log("params", req.params)
         await client.connect();
         const db = client.db(process.env.VITE_MONGODB_ATLAS_DB_NAME);
         const instances = db.collection("instances");
@@ -232,7 +231,6 @@ const getChatHistory = async (req, res) => {
       .find({ instanceId: req.params.id })
       .sort({ timestamp: 1 })
       .toArray(); 
-      console.log("messages for chat history", messages)  
 
     res.json({ success: true, messages });
   } catch (error) {
@@ -277,19 +275,6 @@ const chat = async (req, res) => {
 
     const openaiClient = await getSecuredOpenAIClient();
 
-    console.log("Chat request:", {
-      instanceId,
-      question,
-      timestamp: new Date().toISOString(),
-    });
-
-    if (!question) {
-      throw new Error("No question provided");
-    }
-
-    console.log("Processing chat for instance:", instanceId);
-    console.log("Question:", question);
-
     await client.connect();
 
     // Get relevant documents for this instance
@@ -304,7 +289,6 @@ const chat = async (req, res) => {
 
     //get the chat history for that specific instance
     const convHistory = await chatHistory.find({instanceId: instanceId}).toArray();
-    console.log("Chat history:", formatConvHistory(convHistory));
 
     const embeddings = new OpenAIEmbeddings({
       modelName: "text-embedding-3-small",
@@ -325,7 +309,6 @@ const chat = async (req, res) => {
         "instanceId": instanceId,
       },
     });
-    console.log("Retriever created", retriever);
 
     const filter = {
       preFilter: {
@@ -392,8 +375,6 @@ const response = await chain.invoke({
   question: question,
   conv_history: convHistory
 })
-
-    console.log("Final response:", response);
 
     await chatHistory.insertOne({
       instanceId,
