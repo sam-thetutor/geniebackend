@@ -37,11 +37,7 @@ class TelegramBotService {
 
       this.bot.on('message', async (msg) => {
         try {
-          console.log('New message received:', {
-            chatId: msg.chat.id,
-            chatType: msg.chat.type,
-            message: msg.text
-          });
+          console.log('New message received:', msg);
           
           if (['group', 'supergroup', 'channel'].includes(msg.chat.type)) {
             await this.handleMessage(msg);
