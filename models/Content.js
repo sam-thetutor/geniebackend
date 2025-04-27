@@ -14,7 +14,12 @@ const contentSchema = new mongoose.Schema({
   scheduledTime: {
     type: Date,
     required: true,
-    index: true
+    get: (time) => time,
+    set: (time) => {
+      // Ensure time is stored as UTC
+      const date = new Date(time);
+      return new Date(date.getTime());
+    }
   },
   status: {
     type: String,
