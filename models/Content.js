@@ -14,21 +14,11 @@ const contentSchema = new mongoose.Schema({
   scheduledTime: {
     type: Date,
     required: true,
-    get: (time) => {
-      if (!time) return time;
-      return new Date(time);
-    },
+    get: (time) => time,
     set: (time) => {
       if (!time) return time;
-      // Ensure time is stored as UTC
-      const date = new Date(time);
-      return new Date(Date.UTC(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-        date.getUTCHours(),
-        date.getUTCMinutes()
-      ));
+      // Store exact time without timezone conversion
+      return new Date(time);
     }
   },
   status: {
