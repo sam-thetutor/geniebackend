@@ -1,7 +1,17 @@
-import { BadRequestError } from "@open-ic/openchat-botclient-ts"
+import { BadRequestError, BotClientFactory } from "@open-ic/openchat-botclient-ts"
+import { config } from "dotenv";
 
+config();
 
-export function createCommandChatClient(factory) {
+const factory = new BotClientFactory({
+  openchatPublicKey: process.env.OC_PUBLIC,
+  icHost: process.env.IC_HOST,
+  openStorageCanisterId: process.env.STORAGE_INDEX_CANISTER,
+  identityPrivateKey: process.env.IDENTITY_PRIVATE,
+});
+
+console.log("Factory: ", factory);
+export function createCommandChatClient() {
   
     return (req, res, next) => {
       try {
@@ -11,8 +21,9 @@ export function createCommandChatClient(factory) {
           throw new BadRequestError(accessTokenNotFound());
         }
 
-
-        (req).botClient = factory.createClientFromCommandJwt(token);
+        let client = factory.createClientFromCommandJwt(token);
+        console.log("Client: ", client);
+        req.botClient = client;
         console.log("Bot client created");
         next();
       } catch (err) {

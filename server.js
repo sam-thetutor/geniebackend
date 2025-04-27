@@ -15,21 +15,10 @@ const { default: executeCommand } = require('./handlers/executeCommand');
 
 
 const app = express();
-
 // Connect to database
 connectDB();
-
 // Start content scheduler
 contentScheduler.start();
-
-// // Middleware
-// app.use(cors({
-//   origin: '*', // Allow all origins
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   allowedHeaders: ['Content-Type'],
-//   credentials: true
-// }));
-
 
 const emptyPermissions = {
   message: [],
@@ -63,7 +52,6 @@ let schema =  {
       permissions: Permissions.encodePermissions({
         ...emptyPermissions,
         message: ["Text"],
-        chat: ["ReadMessages"],
       }),
       params: [],
     }
@@ -71,19 +59,9 @@ let schema =  {
 }
 
 
-// app.use(helmet());
-// app.use(express.json());
-
- app.use(cors());
-// app.use(limiter);
- app.use(express.json());
-
-const factory = new BotClientFactory({
-  openchatPublicKey: process.env.OC_PUBLIC,
-  icHost: process.env.IC_HOST,
-  openStorageCanisterId: process.env.STORAGE_INDEX_CANISTER,
-  identityPrivateKey: process.env.IDENTITY_PRIVATE,
-});
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 
@@ -94,7 +72,7 @@ app.get('/', (req, res)=>{
 app.get('/bot_definition', (req, res)=>{
   res.status(200).json(schema);
 })
-app.post('/execute_command',createCommandChatClient(factory), executeCommand)
+app.post('/execute_command', executeCommand)
 
 // // Routes for the for the frontend
 app.use('/api/campaigns', require('./routes/campaignRoutes'));
@@ -105,16 +83,6 @@ app.use('/api/routes', require('./routes/routeRoutes'));
 app.use('/api/analytics', require('./routes/analyticsRoutes'));
 app.use('/api/ai-chat', require('./routes/aiChatRoutes'));
 
-// //routes for the bot from openchat
-// app.use('/', (req, res)=>{
-//   res.status(200).json(schema);
-//  });
-
-//  app.use('/execute_command',createCommandChatClient(factory), executeCommand)
-//  app.use('/execute_action',(req,res)=>{
-//   console.log("xsxsxsxs",req.body)
-//   res.status(200).json({ message: 'Command executed successfully' });
-//  })
 
 // 404 handler
 app.use((req, res) => {
