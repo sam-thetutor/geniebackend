@@ -111,6 +111,6 @@ process.on('SIGINT', () => {
 
  telegramBot.start();
 //discordBot.start();
-// twitterBot.start();
+twitterBot.start();
 const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
