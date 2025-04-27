@@ -79,12 +79,14 @@ class TelegramBotService {
 
   async handleMessage(msg) {
     try {
+      console.log("handleMessage")
       // Find routes that match this chat
       const routes = await Route.find({ 
         sourceType: 'telegram',
         'source.chatId': msg.chat.id.toString(),
         active: true 
       });
+      console.log("routes",routes)
 
       for (const route of routes) {
         // Skip if username filter is set and doesn't match
