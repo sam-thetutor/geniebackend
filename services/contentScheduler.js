@@ -118,7 +118,7 @@ class ContentScheduler {
       console.error(`Failed to update content ${content._id} status:`, error);
     }
   }
-
+  
   // Helper method to schedule content retry
   async scheduleRetry(content) {
     try {
@@ -140,25 +140,13 @@ class ContentScheduler {
       try {
 //fetch the campagin in order to get the apiKey
         const campaign = await Campaign.findById(content.campaignId);
-        console.log("campaign",campaign)
-
-
-        console.log("campaign",content)
-        console.log('Would post to OpenChat with:', {
-          apiKey: content.campaignId.apiKey,
-          content: content.content,
-          campaignName: content.campaignId.name
-        });
-
         //decrypt the apikey
         const decryptedApiKey = await Encryption.decrypt(content.campaignId.apiKey);
 
         // Create the OpenChat context object
         let client = factory.createClientFromApiKey(decryptedApiKey);
         let resz = await client.createTextMessage(content.content);
-        
-        console.log("text message sending results:", resz);
-        
+                
         await client.sendMessage(resz)
           .then(() => {
             console.log(`Successfully sent message to OpenChat for content ${content._id}`);

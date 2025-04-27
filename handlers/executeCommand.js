@@ -18,7 +18,7 @@ const executeCommand = async (req, res) => {
       "Welcome to Genie, an AI-powered content platform that allows you " +
         "to manage and schedule content across your different OpenChat accounts and groups." +
         "Generate, schedule, and publish content to your OpenChat accounts with ease at your desired time." +
-        "Visit https://genie.vercel.app to get started!"
+        "Visit https://genie-oc.vercel.app to get started!"
     );
     msg.setFinalised(true);
     botClient.sendMessage(msg).catch((err) => {
