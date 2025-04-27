@@ -33,11 +33,13 @@ class TelegramBotService {
         }
       });
 
+
       this.bot.on('message', async (msg) => {
         try {
           console.log('New message received:', {
             chatId: msg.chat.id,
-            chatType: msg.chat.type
+            chatType: msg.chat.type,
+            message: msg.text
           });
           
           if (['group', 'supergroup', 'channel'].includes(msg.chat.type)) {
