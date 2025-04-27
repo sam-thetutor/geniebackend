@@ -22,6 +22,7 @@ class TelegramBotService {
       this.botId = botInfo.id;
 
       this.bot.on('new_chat_members', async (msg) => {
+        console.log("bot is added to the group")
         try {
           const newMembers = msg.new_chat_members;
           if (newMembers.some(member => member.id === this.botId)) {
