@@ -10,13 +10,10 @@ const factory = new BotClientFactory({
   identityPrivateKey: process.env.IDENTITY_PRIVATE,
 });
 
-console.log("Factory: ", factory);
-
 const executeCommand = async (req, res) => {
   try {
     const token = req.headers["x-oc-jwt"];
     const botClient = factory.createClientFromCommandJwt(token);
-    console.log("botClient :", botClient);
     let msg = await botClient.createTextMessage(
       "Welcome to Genie, an AI-powered content platform that allows you " +
         "to manage and schedule content across your different OpenChat accounts and groups." +
